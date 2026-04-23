@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forever Love ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at 20% 30%, #1a1f4d, #000 70%);
+  color: white;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* INTRO */
+.intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 10000;
+  animation: fadeOut 3s ease forwards;
+  animation-delay: 3s;
+}
+
+@keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+
+/* LOCK */
+.lock {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+}
+
+.lock-box {
+  background: rgba(20,20,40,0.6);
+  padding: 40px;
+  border-radius: 25px;
+  text-align: center;
+}
+
+.lock input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  text-align: center;
+}
+
+.lock button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #ff4e7a;
+  color: white;
+}
+
+.main { display: none; }
+
+/* CHAT HEADER */
+.chat-header {
+  position: sticky;
+  top: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  padding: 10px;
+  text-align: center;
+}
+
+.status { font-size: 0.8rem; opacity: 0.7; }
+
+.section {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+}
+
+.chat { display: flex; flex-direction: column; gap: 10px; }
+
+.msg {
+  padding: 12px 18px;
+  border-radius: 20px;
+  max-width: 70%;
+}
+
+.left { background: white; color: black; align-self: flex-start; }
+.right { background: #ff4e7a; align-self: flex-end; }
+
+.typing { font-size: 0.8rem; opacity: 0.7; }
+
+/* OUTRO */
+.outro {
+  text-align: center;
+  padding: 40px 20px;
+  opacity: 0;
+  transition: 1s;
+}
+
+.outro.show { opacity: 1; }
+
+/* SHOOTING STAR */
+.shoot {
+  position: fixed;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(white, transparent);
+  transform: rotate(45deg);
+  animation: shoot 1s linear forwards;
+}
+
+@keyframes shoot {
+  to { transform: translate(400px,400px) rotate(45deg); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="galaxy"></canvas>
+
+<div class="intro">
+  <h1>Made for Puja ❤️</h1>
+</div>
+
+<div class="lock">
+  <div class="lock-box">
+    <h2>🔒 Private Memory</h2>
+    <input id="pass" placeholder="14feb">
+    <br>
+    <button onclick="unlock()">Unlock</button>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="chat-header">
+  <div>Puja 💖</div>
+  <div id="status" class="status">online</div>
+</div>
+
+<div class="section">
+  <div id="chat" class="chat"></div>
+  <div id="typing" class="typing"></div>
+</div>
+
+<div id="outro" class="outro">
+  <h2>From that day... everything changed ❤️</h2>
+  <p>Som ❤️ Puja — Forever</p>
+</div>
+
+</div>
+
+<script>
+// GALAXY
+const canvas = document.getElementById("galaxy");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+for(let i=0;i<400;i++){
+  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5});
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function animate(){
+  stars.forEach(s=>{
+    s.y += 0.3;
+    if(s.y>canvas.height) s.y=0;
+  });
+  draw();
+  requestAnimationFrame(animate);
+}
+animate();
+
+setInterval(()=>{
+  const star=document.createElement("div");
+  star.className="shoot";
+  star.style.left=Math.random()*100+"vw";
+  star.style.top=Math.random()*50+"vh";
+  document.body.appendChild(star);
+  setTimeout(()=>star.remove(),1000);
+},1500);
+
+// NAMES
+const name1="Som";
+const name2="Puja";
+
+function unlock(){
+  if(document.getElementById("pass").value.toLowerCase()==="14feb"){
+    document.querySelector(".lock").style.display="none";
+    document.querySelector(".main").style.display="block";
+    startChat();
+  }
+}
+
+// NEW CONVERSATION (MORE NATURAL)
+const messages=[
+{text:"Hey Puja, free ho?",side:"left"},
+{text:"Haan, kya hua?",side:"right"},
+{text:"Nothing... just wanted to talk",side:"left"},
+{text:"Acha? itna yaad aa rahi thi? 😄",side:"right"},
+{text:"Maybe… thodi zyada hi",side:"left"},
+{text:"Hmm interesting 👀",side:"right"},
+{text:"Puja… ek baat bolu?",side:"left"},
+{text:"Bolo na",side:"right"},
+{text:"I think I really like you",side:"left"},
+{text:"Finally 😌",side:"right"},
+{text:"Matlab?",side:"left"},
+{text:"Mujhe bhi tum pasand ho Som ❤️",side:"right"},
+{text:"So… will you be mine?",side:"left"},
+{text:"Already yours 💕 (14 Feb)",side:"right"}
+];
+
+function startChat(){
+let i=0;
+const chat=document.getElementById("chat");
+const typing=document.getElementById("typing");
+
+function send(){
+if(i>=messages.length){
+  document.getElementById("outro").classList.add("show");
+  return;
+}
+
+// typing indicator (on screen)
+typing.innerText = messages[i].side === "left" ? `${name1} is typing...` : `${name2} is typing...`;
+
+setTimeout(()=>{
+  typing.innerText="";
+  const div=document.createElement("div");
+  div.className="msg "+messages[i].side;
+  div.innerText=messages[i].text;
+  chat.appendChild(div);
+
+  window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+
+  i++;
+  setTimeout(send,1200);
+},1500);
+}
+
+send();
+}
+</script>
+
+</body>
+</html>
